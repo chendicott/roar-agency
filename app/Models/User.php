@@ -93,4 +93,16 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Trip::class)->wherePivot('user_role', 'support_worker');
     }
+
+    public function relatedUsers()
+    {
+        return $this->belongsToMany(User::class, 'user_user', 'user_id', 'relation_user_id')
+            ->withPivot('user_role');
+    }
+
+    public function onBehalfOfParticipant()
+    {
+        return $this->belongsToMany(User::class, 'user_user', 'relation_user_id', 'user_id')
+            ->withPivot('user_role');
+    }
 }

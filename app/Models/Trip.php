@@ -31,4 +31,9 @@ class Trip extends Model
     {
         return $this->morphMany(FileAttachment::class, 'linked_model');
     }
+
+    public function allParticipants()
+    {
+        return $this->participants->merge($this->supportWorkers);
+    }
 }
