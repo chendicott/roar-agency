@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use voku\helper\ASCII;
 
-class RedirectAdmin
+class AuthenticateAdmin
 {
     /**
      * Handle an incoming request.
@@ -18,8 +18,8 @@ class RedirectAdmin
     public function handle(Request $request, Closure $next)
     {
 
-        if ($request->user()->isAdmin()) {
-            return redirect()->route('admin.trips');
+        if (!$request->user()->isAdmin()) {
+            return redirect()->route('login');
         }
 
         return $next($request);

@@ -27,6 +27,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'dateofbirth',
     ];
 
     /**
@@ -58,4 +59,38 @@ class User extends Authenticatable
     protected $appends = [
         'profile_photo_url',
     ];
+
+    public function isAdmin() {
+        return $this->type === 'admin';
+    }
+
+    public function medicalDetail()
+    {
+        return $this->hasOne(MedicalDetail::class);
+    }
+
+    public function submittedCaseNotes()
+    {
+        return $this->hasMany(CaseNote::class, 'user_id');
+    }
+
+    public function submittedIncidentReports()
+    {
+        return $this->hasMany(IncidentReport::class, 'submitted_by_user_id');
+    }
+
+    public function incidentReportsForParticipant()
+    {
+        return $this->hasMany(IncidentReport::class, 'relates_to_participant_id');
+    }
+
+    public function tripsAsParticipant()
+    {
+        return $this->belongsToMany(Trip::class)->wherePivot('user_role', 'participant');
+    }
+
+    public function tripsAsSupportWorker()
+    {
+        return $this->belongsToMany(Trip::class)->wherePivot('user_role', 'support_worker');
+    }
 }

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="h-full bg-white">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -9,7 +9,7 @@
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
-        <link rel="stylesheet" href="https://rsms.me/inter/inter.css">z
+        <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -17,25 +17,24 @@
         <!-- Styles -->
         @livewireStyles
     </head>
-    <body class="font-sans antialiased">
+    <body class="font-sans antialiased h-full">
         <x-banner />
 
-        <div class="min-h-screen bg-gray-100">
-            @livewire('navigation-menu')
+        @livewire('navigation-menu')
 
-            <!-- Page Heading -->
-            @if (isset($header))
-                        {{ $header }}
-            @endif
+        <!-- Page Heading -->
+        @if (isset($header))
+                    {{ $header }}
+        @endif
 
-            <!-- Page Content -->
+        <!-- Page Content -->
 
-            <main class="py-10 lg:pl-72">
-                <div class="px-4 sm:px-6 lg:px-8">
-                    {{ $slot }}
-                </div>
-            </main>
-        </div>
+        <main class="py-10 lg:pl-72">
+            <div class="px-4 sm:px-6 lg:px-8">
+                {{ $slot }}
+            </div>
+        </main>
+
 
         @stack('modals')
 
