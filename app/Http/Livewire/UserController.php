@@ -43,7 +43,7 @@ class UserController extends Component
 
         $this->currentUserIsAdmin = auth()->user()->isAdmin();
 
-        $medicalDetail = $user->medicalDetail()->first();
+        $medicalDetail = $user->medicalDetails()->first();
 
         if ($medicalDetail) {
             $this->medicalDetails = (array) $medicalDetail->medical_data;
@@ -105,7 +105,7 @@ class UserController extends Component
     public function saveMedical(): void
     {
         $this->authorize('edit', $this->user);
-        $this->user->medicalDetail()->updateOrCreate([], ['medical_data' => $this->medicalDetails]);
+        $this->user->medicalDetails()->updateOrCreate([], ['medical_data' => $this->medicalDetails]);
         $this->isEditing = false;
     }
 

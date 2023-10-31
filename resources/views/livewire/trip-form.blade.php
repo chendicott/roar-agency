@@ -1,496 +1,290 @@
-<div>
+<div class="mt-10">
     <form wire:submit.prevent="submitForm">
-        <div class="container mx-auto">
-            <div class="flex w-3/5 p-4">
-                <div class="space-y-12 sm:space-y-16 ">
-                    <div>
-                        <h2 class="text-base font-semibold leading-7 text-gray-900">Quote</h2>
-                        <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-600">Respite/Short Term Accommodation
-                            includes accommodation, food and activities anywhere in Australia!</p>
+        <div class="mx-auto max-w-6xl flex flex-row-reverse">
+            <div class="w-2/6 px-6 ">
+                <h3 class="text-gray-900 text-xl leading-7 font-bold">New Booking Request</h3>
 
-                        {{-- Quote - how many nights --}}
-                        <div class="sm:grid sm:grid-cols-3 sm:items-start sm:gap-4 sm:py-6">
-                            <label for="nights" class="block text-sm font-medium leading-6 text-gray-900 sm:pt-1.5">How
-                                many nights would you like to go for?</label>
-                            <div class="mt-2 sm:col-span-2 sm:mt-0">
-                                <select id="nights" name="nights"
-                                        class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-sky-600 sm:max-w-xs sm:text-sm sm:leading-6">
-                                    <option value="1 night">1 night</option>
-                                    <option value="2 nights">2 nights</option>
-                                    <option value="3 nights">3 nights</option>
-                                    <option value="4 nights">4 nights</option>
-                                    <option value="5 nights">5 nights</option>
-                                    <option value="6 nights">6 nights</option>
-                                    <option value="7 nights">7 nights</option>
-                                    <option value="7+ nights">7+ nights</option>
-                                </select>
+                <div class="flex flex-col mt-4 hover:cursor-pointer" wire:click="changeStep('quote')">
+                    <div
+                        class="border-l-[3px] @if($currentStep == 'quote')border-sky-500 @else border-gray-500 @endif flex">
+                        <div class="pl-2 py-1 flex flex-col justify-center">
+                            <div
+                                class="text-xs leading-4 font-semibold tracking-wide uppercase  @if($currentStep == 'quote')text-sky-500 @else text-gray-500 @endif ">
+                                Step 1
                             </div>
-                        </div>
-
-
-                        <fieldset>
-                            <legend class="sr-only">You can plan your own STA, or have a Roar Agency Consultant plan it
-                                for you.
-                            </legend>
-                            <div class="sm:grid sm:grid-cols-3 sm:gap-4 sm:py-6">
-                                <div class="text-sm font-semibold leading-6 text-gray-900" aria-hidden="true">You can
-                                    plan your own STA, or have a Roar Agency Consultant plan it for you.
-                                </div>
-                                <div class="mt-4 sm:col-span-2 sm:mt-0">
-                                    <div class="max-w-lg space-y-6">
-
-                                        <div class="-space-y-px rounded-md bg-white">
-                                            <!-- Checked: "z-10 border-sky-200 bg-sky-50", Not Checked: "border-gray-200" -->
-                                            <label
-                                                class="rounded-tl-md rounded-tr-md relative flex cursor-pointer border p-4 focus:outline-none">
-                                                <input type="radio" name="privacy-setting" value="Public access"
-                                                       class="mt-0.5 h-4 w-4 shrink-0 cursor-pointer text-sky-600 border-gray-300 focus:ring-sky-600 active:ring-2 active:ring-offset-2 active:ring-sky-600"
-                                                       aria-labelledby="privacy-setting-0-label"
-                                                       aria-describedby="privacy-setting-0-description">
-                                                <span class="ml-3 flex flex-col">
-        <!-- Checked: "text-sky-900", Not Checked: "text-gray-900" -->
-        <span id="privacy-setting-0-label" class="block text-sm font-medium">Bring your own support worker</span>
-                                                    <!-- Checked: "text-sky-700", Not Checked: "text-gray-500" -->
-        <span id="privacy-setting-0-description"
-              class="block text-sm">You can add your support worker to the trip later</span>
-      </span>
-                                            </label>
-                                            <!-- Checked: "z-10 border-sky-200 bg-sky-50", Not Checked: "border-gray-200" -->
-                                            <label class="relative flex cursor-pointer border p-4 focus:outline-none">
-                                                <input type="radio" name="privacy-setting"
-                                                       value="Bring your own support worker"
-                                                       class="mt-0.5 h-4 w-4 shrink-0 cursor-pointer text-sky-600 border-gray-300 focus:ring-sky-600 active:ring-2 active:ring-offset-2 active:ring-sky-600"
-                                                       aria-labelledby="privacy-setting-1-label"
-                                                       aria-describedby="privacy-setting-1-description">
-                                                <span class="ml-3 flex flex-col">
-        <!-- Checked: "text-sky-900", Not Checked: "text-gray-900" -->
-        <span id="privacy-setting-1-label" class="block text-sm font-medium">Supported by Roar Agency</span>
-                                                    <!-- Checked: "text-sky-700", Not Checked: "text-gray-500" -->
-        <span id="privacy-setting-1-description" class="block text-sm">Roar Agency will provide you with a support worker</span>
-      </span>
-                                            </label>
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </fieldset>
-
-                        <fieldset>
-                            <legend class="sr-only">Do you currently receive ongoing weekly supports from Roar Agency?
-                            </legend>
-                            <div class="sm:grid sm:grid-cols-3 sm:items-baseline sm:gap-4 sm:py-6">
-                                <div class="text-sm font-semibold leading-6 text-gray-900" aria-hidden="true">Do you
-                                    currently receive ongoing weekly supports from Roar Agency?
-                                </div>
-                                <div class="mt-1 sm:col-span-2 sm:mt-0">
-                                    <div class="max-w-lg">
-                                        <div class="mt-6 space-y-6">
-                                            <div class="flex items-center gap-x-3">
-                                                <input id="ongoing_supports" name="push-notifications" type="radio"
-                                                       class="h-4 w-4 border-gray-300 text-sky-600 focus:ring-sky-600">
-                                                <label for="ongoing_supports"
-                                                       class="block text-sm font-medium leading-6 text-gray-900">Yes</label>
-                                            </div>
-                                            <div class="flex items-center gap-x-3">
-                                                <input id="ongoing_supports" name="push-notifications" type="radio"
-                                                       class="h-4 w-4 border-gray-300 text-sky-600 focus:ring-sky-600">
-                                                <label for="ongoing_supports"
-                                                       class="block text-sm font-medium leading-6 text-gray-900">No</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </fieldset>
-                    </div>
-
-                    <div class="space-y-12 sm:space-y-16 ">
-                        <div>
-                            <h2 class="text-base font-semibold leading-7 text-gray-900">Trip Participant Details</h2>
-                            <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-600">Participants Details</p>
-
-
-                            <!-- Trip Participants Details -->
-                            <div class="sm:grid sm:grid-cols-3 sm:items-start sm:gap-4 sm:py-6">
-                                <label for="first_name" class="block text-sm font-medium leading-6 text-gray-900 sm:pt-1.5">First Name</label>
-                                <div class="mt-2 sm:col-span-2 sm:mt-0">
-                                    <input type="text" name="first_name" id="first_name" autocomplete="first_name" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-600 sm:max-w-xs sm:text-sm sm:leading-6">
-                                </div>
-                            </div>
-
-                            <div class="sm:grid sm:grid-cols-3 sm:items-start sm:gap-4 sm:py-6">
-                                <label for="last_name" class="block text-sm font-medium leading-6 text-gray-900 sm:pt-1.5">Last Name</label>
-                                <div class="mt-2 sm:col-span-2 sm:mt-0">
-                                    <input type="text" name="first_name" id="first_name" autocomplete="first_name" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-600 sm:max-w-xs sm:text-sm sm:leading-6">
-                                </div>
-                            </div>
-
-                            <div class="sm:grid sm:grid-cols-3 sm:items-start sm:gap-4 sm:py-6">
-                                <label for="title" class="block text-sm font-medium leading-6 text-gray-900 sm:pt-1.5">Preferred Title</label>
-                                <div class="mt-2 sm:col-span-2 sm:mt-0">
-                                    <select id="title" name="title"
-                                            class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-sky-600 sm:max-w-xs sm:text-sm sm:leading-6">
-                                        <option value="Mr">Mr</option>
-                                        <option value="Mrs">Mrs</option>
-                                        <option value="Miss">Miss</option>
-                                        <option value="Ms">Ms</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="sm:grid sm:grid-cols-3 sm:items-start sm:gap-4 sm:py-6">
-                                <label for="pronouns" class="block text-sm font-medium leading-6 text-gray-900 sm:pt-1.5">Preferred Pronouns</label>
-                                <div class="mt-2 sm:col-span-2 sm:mt-0">
-                                    <select id="title" name="pronouns"
-                                            class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-sky-600 sm:max-w-xs sm:text-sm sm:leading-6">
-                                        <option value="He">He</option>
-                                        <option value="She">She</option>
-                                        <option value="They">They</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="sm:grid sm:grid-cols-3 sm:items-start sm:gap-4 sm:py-6">
-                                <label for="email" class="block text-sm font-medium leading-6 text-gray-900 sm:pt-1.5">Email Address</label>
-                                <div class="mt-2 sm:col-span-2 sm:mt-0">
-                                    <input type="email" name="email" id="email" autocomplete="email" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-600 sm:max-w-xs sm:text-sm sm:leading-6">
-                                </div>
-                            </div>
-
-                            <div class="sm:grid sm:grid-cols-3 sm:items-start sm:gap-4 sm:py-6">
-                                <label for="contact" class="block text-sm font-medium leading-6 text-gray-900 sm:pt-1.5">Contact Number</label>
-                                <div class="mt-2 sm:col-span-2 sm:mt-0">
-                                    <input type="number" name="contact" id="contact" autocomplete="contact" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-600 sm:max-w-xs sm:text-sm sm:leading-6">
-                                </div>
-                            </div>
-
-                            <fieldset>
-                                <legend class="sr-only">Do you have a companion card?
-                                </legend>
-                                <div class="sm:grid sm:grid-cols-3 sm:items-baseline sm:gap-4 sm:py-6">
-                                    <div class="text-sm font-semibold leading-6 text-gray-900" aria-hidden="true">Do you have a companion card?
-                                    </div>
-                                    <div class="mt-1 sm:col-span-2 sm:mt-0">
-                                        <div class="max-w-lg">
-                                            <div class="mt-6 space-y-6">
-                                                <div class="flex items-center gap-x-3">
-                                                    <input id="companion_card" name="companion_card" type="radio"
-                                                           class="h-4 w-4 border-gray-300 text-sky-600 focus:ring-sky-600">
-                                                    <label for="companion_card"
-                                                           class="block text-sm font-medium leading-6 text-gray-900">Yes</label>
-                                                </div>
-                                                <div class="flex items-center gap-x-3">
-                                                    <input id="companion_card" name="companion_card" type="radio"
-                                                           class="h-4 w-4 border-gray-300 text-sky-600 focus:ring-sky-600">
-                                                    <label for="companion_card"
-                                                           class="block text-sm font-medium leading-6 text-gray-900">No</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </fieldset>
-
-                            <fieldset>
-                                <legend class="sr-only">Are you a participant of this trip?
-                                </legend>
-                                <div class="sm:grid sm:grid-cols-3 sm:items-baseline sm:gap-4 sm:py-6">
-                                    <div class="text-sm font-semibold leading-6 text-gray-900" aria-hidden="true">Are you a participant of this trip?
-                                    </div>
-                                    <div class="mt-1 sm:col-span-2 sm:mt-0">
-                                        <div class="max-w-lg">
-                                            <div class="mt-6 space-y-6">
-                                                <div class="flex items-center gap-x-3">
-                                                    <input id="trip_participant" name="trip_participant" type="radio"
-                                                           class="h-4 w-4 border-gray-300 text-sky-600 focus:ring-sky-600">
-                                                    <label for="companion_card"
-                                                           class="block text-sm font-medium leading-6 text-gray-900">Yes</label>
-                                                </div>
-                                                <div class="flex items-center gap-x-3">
-                                                    <input id="trip_participant" name="trip_participant" type="radio"
-                                                           class="h-4 w-4 border-gray-300 text-sky-600 focus:ring-sky-600">
-                                                    <label for="trip_participant"
-                                                           class="block text-sm font-medium leading-6 text-gray-900">No</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </fieldset>
-
-                            <!-- Plan Details / STA Details -->
-                            <fieldset>
-                                <legend class="sr-only">Do you have a plan nominee?
-                                </legend>
-                                <div class="sm:grid sm:grid-cols-3 sm:items-baseline sm:gap-4 sm:py-6">
-                                    <div class="text-sm font-semibold leading-6 text-gray-900" aria-hidden="true">Do you have a plan nominee?
-                                    </div>
-                                    <div class="mt-1 sm:col-span-2 sm:mt-0">
-                                        <div class="max-w-lg">
-                                            <div class="mt-6 space-y-6">
-                                                <div class="flex items-center gap-x-3">
-                                                    <input id="plan_nominee" name="trip_participant" type="radio"
-                                                           class="h-4 w-4 border-gray-300 text-sky-600 focus:ring-sky-600">
-                                                    <label for="plan_nominee"
-                                                           class="block text-sm font-medium leading-6 text-gray-900">Yes</label>
-                                                </div>
-                                                <div class="flex items-center gap-x-3">
-                                                    <input id="plan_nominee" name="trip_participant" type="radio"
-                                                           class="h-4 w-4 border-gray-300 text-sky-600 focus:ring-sky-600">
-                                                    <label for="plan_nominee"
-                                                           class="block text-sm font-medium leading-6 text-gray-900">No</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </fieldset>
-
-                            <div class="sm:grid sm:grid-cols-3 sm:items-start sm:gap-4 sm:py-6">
-                                <label for="nominee_name" class="block text-sm font-medium leading-6 text-gray-900 sm:pt-1.5">Plan nominee name</label>
-                                <div class="mt-2 sm:col-span-2 sm:mt-0">
-                                    <input type="text" name="nominee_name" id="nominee_name" autocomplete="nominee_name" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-600 sm:max-w-xs sm:text-sm sm:leading-6">
-                                </div>
-                            </div>
-
-                            <div class="sm:grid sm:grid-cols-3 sm:items-start sm:gap-4 sm:py-6">
-                                <label for="nominee_contact" class="block text-sm font-medium leading-6 text-gray-900 sm:pt-1.5">Plan nominee contact</label>
-                                <div class="mt-2 sm:col-span-2 sm:mt-0">
-                                    <input type="text" name="nominee_contact" id="nominee_contact" autocomplete="nominee_contact" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-600 sm:max-w-xs sm:text-sm sm:leading-6">
-                                </div>
-                            </div>
-
-                            <fieldset>
-                                <legend class="sr-only">Do you have a support coordinator?
-                                </legend>
-                                <div class="sm:grid sm:grid-cols-3 sm:items-baseline sm:gap-4 sm:py-6">
-                                    <div class="text-sm font-semibold leading-6 text-gray-900" aria-hidden="true">Do you have a support coordinator?
-                                    </div>
-                                    <div class="mt-1 sm:col-span-2 sm:mt-0">
-                                        <div class="max-w-lg">
-                                            <div class="mt-6 space-y-6">
-                                                <div class="flex items-center gap-x-3">
-                                                    <input id="support_coordinator" name="support_coordinator" type="radio"
-                                                           class="h-4 w-4 border-gray-300 text-sky-600 focus:ring-sky-600">
-                                                    <label for="support_coordinator"
-                                                           class="block text-sm font-medium leading-6 text-gray-900">Yes</label>
-                                                </div>
-                                                <div class="flex items-center gap-x-3">
-                                                    <input id="plan_nominee" name="support_coordinator" type="radio"
-                                                           class="h-4 w-4 border-gray-300 text-sky-600 focus:ring-sky-600">
-                                                    <label for="support_coordinator"
-                                                           class="block text-sm font-medium leading-6 text-gray-900">No</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </fieldset>
-
-                            <fieldset>
-                                <legend class="sr-only">Do you have an appointed guardian?
-                                </legend>
-                                <div class="sm:grid sm:grid-cols-3 sm:items-baseline sm:gap-4 sm:py-6">
-                                    <div class="text-sm font-semibold leading-6 text-gray-900" aria-hidden="true">Do you have an appointed guardian?
-                                    </div>
-                                    <div class="mt-1 sm:col-span-2 sm:mt-0">
-                                        <div class="max-w-lg">
-                                            <div class="mt-6 space-y-6">
-                                                <div class="flex items-center gap-x-3">
-                                                    <input id="appointed_guardian" name="appointed_guardian" type="radio"
-                                                           class="h-4 w-4 border-gray-300 text-sky-600 focus:ring-sky-600">
-                                                    <label for="appointed_guardian"
-                                                           class="block text-sm font-medium leading-6 text-gray-900">Yes</label>
-                                                </div>
-                                                <div class="flex items-center gap-x-3">
-                                                    <input id="appointed_guardian" name="appointed_guardian" type="radio"
-                                                           class="h-4 w-4 border-gray-300 text-sky-600 focus:ring-sky-600">
-                                                    <label for="appointed_guardian"
-                                                           class="block text-sm font-medium leading-6 text-gray-900">No</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </fieldset>
-
-                            <fieldset>
-                                <legend class="sr-only">Plan managed
-                                </legend>
-                                <div class="sm:grid sm:grid-cols-3 sm:items-baseline sm:gap-4 sm:py-6">
-                                    <div class="text-sm font-semibold leading-6 text-gray-900" aria-hidden="true">Plan managed
-                                    </div>
-                                    <div class="mt-1 sm:col-span-2 sm:mt-0">
-                                        <div class="max-w-lg">
-                                            <div class="mt-6 space-y-6">
-                                                <div class="flex items-center gap-x-3">
-                                                    <input id="plan_management" name="plan_management" type="radio"
-                                                           class="h-4 w-4 border-gray-300 text-sky-600 focus:ring-sky-600">
-                                                    <label for="plan_management"
-                                                           class="block text-sm font-medium leading-6 text-gray-900">Yes</label>
-                                                </div>
-                                                <div class="flex items-center gap-x-3">
-                                                    <input id="plan_management" name="plan_management" type="radio"
-                                                           class="h-4 w-4 border-gray-300 text-sky-600 focus:ring-sky-600">
-                                                    <label for="plan_management"
-                                                           class="block text-sm font-medium leading-6 text-gray-900">No</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </fieldset>
-
-                            <fieldset>
-                                <legend class="sr-only">Are you a smoker?
-                                </legend>
-                                <div class="sm:grid sm:grid-cols-3 sm:items-baseline sm:gap-4 sm:py-6">
-                                    <div class="text-sm font-semibold leading-6 text-gray-900" aria-hidden="true">Are you a smoker?
-                                    </div>
-                                    <div class="mt-1 sm:col-span-2 sm:mt-0">
-                                        <div class="max-w-lg">
-                                            <div class="mt-6 space-y-6">
-                                                <div class="flex items-center gap-x-3">
-                                                    <input id="smoker" name="smoker" type="radio"
-                                                           class="h-4 w-4 border-gray-300 text-sky-600 focus:ring-sky-600">
-                                                    <label for="smoker"
-                                                           class="block text-sm font-medium leading-6 text-gray-900">Yes</label>
-                                                </div>
-                                                <div class="flex items-center gap-x-3">
-                                                    <input id="smoker" name="smoker" type="radio"
-                                                           class="h-4 w-4 border-gray-300 text-sky-600 focus:ring-sky-600">
-                                                    <label for="smoker"
-                                                           class="block text-sm font-medium leading-6 text-gray-900">No</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </fieldset>
-                        </div>
-                    </div>
-
-                    <div class="space-y-12 sm:space-y-16 ">
-                        <div>
-                            <h2 class="text-base font-semibold leading-7 text-gray-900">Trip Details</h2>
-                            <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-600">Participants Details</p>
-
-                            <!-- Trip Details -->
-                            <label for="location">Preferred Location</label>
-                            <input type="text" id="location" name="location">
-
-                            <label for="accommodation_provider">Preferred Accommodation Provider</label>
-                            <input type="text" id="accommodation_provider" name="accommodation_provider">
-
-                            <label for="sta_start_date">Preffered STA Start Date</label>
-                            <input type="date" id="sta_start_date" name="sta_start_date">
-
-                            <label for="sta_end_date">Preferred STA End Date</label>
-                            <input type="date" id="sta_end_date" name="sta_end_date">
-
-                            <label for="worker_first_name">Support Worker First Name</label>
-                            <input type="text" id="worker_first_name" name="worker_first_name">
-
-                            <label for="worker_last_name">Support Worker Last Name</label>
-                            <input type="text" id="worker_last_name" name="worker_last_name">
-
-                            <label for="worker_contact">Support Worker Contact Number</label>
-                            <input type="text" id="worker_contact" name="worker_contact">
-
-                            <!-- Emotional Support -->
-                            <label>Do you need emotional support?</label>
-                            <input type="radio" name="emotional_support" value="yes"> Yes
-                            <input type="radio" name="emotional_support" value="no"> No
-
-                            <label for="support_name">Emotional support name</label>
-                            <input type="text" id="support_name" name="support_name">
-
-                            <label for="support_relationship">Emotional support relationship</label>
-                            <input type="text" id="support_relationship" name="support_relationship">
-
-                            <label for="support_dob">Emotional support DOB</label>
-                            <input type="text" id="support_dob" name="support_dob">
-
-                            <!-- Accommodations -->
-                            <label for="bedrooms">Number of bedrooms</label>
-                            <select id="bedrooms" name="bedrooms">
-                                <!-- You can populate options here. -->
-                            </select>
-
-                            <label>Do you require the accommodation to be accessible or have specific
-                                modifications?</label>
-                            <input type="radio" name="accessibility" value="yes"> Yes
-                            <input type="radio" name="accessibility" value="no"> No
-
-                            <label for="accessibility_requirements">Please specify accessibility or modification
-                                requirements?</label>
-                            <textarea id="accessibility_requirements" name="accessibility_requirements"></textarea>
-
-                            <label for="other_requests">Do you have any other requests</label>
-                            <textarea id="other_requests" name="other_requests"></textarea>
-
-                            <!-- Participant medical details -->
-                            <h3>Medical Information</h3>
-
-                            <label for="diagnoses">Diagnoses</label>
-                            <input type="text" id="diagnoses" name="diagnoses">
-
-                            <label for="medical_conditions">Medical conditions</label>
-                            <input type="text" id="medical_conditions" name="medical_conditions">
-
-                            <label for="physical_support">Physical support needs</label>
-                            <input type="text" id="physical_support" name="physical_support">
-
-                            <label>Do you require medication?</label>
-                            <input type="radio" name="require_medication" value="yes"> Yes
-                            <input type="radio" name="require_medication" value="no"> No
-
-                            <label for="medications">Medications</label>
-                            <input type="text" id="medications" name="medications">
-
-                            <label>Medication Administration</label>
-                            <input type="radio" name="medication_administration" value="self_administered"> Self
-                            administered
-                            <input type="radio" name="medication_administration" value="help_needed"> Need help with
-                            administering medicine
-
-                            <label>Do you have any alergies?</label>
-                            <input type="radio" name="have_allergies" value="yes"> Yes
-                            <input type="radio" name="have_allergies" value="no"> No
-
-                            <label for="allergies_list">List alergies</label>
-                            <input type="text" id="allergies_list" name="allergies_list">
-
-                            <label>Do you have a behaviour support plan in place?</label>
-                            <input type="radio" name="support_plan" value="yes"> Yes
-                            <input type="radio" name="support_plan" value="no"> No
-
-                            <!-- Emergency Contact Information -->
-                            <h3>Emergency Contact Information</h3>
-
-                            <label for="emergency_first_name">Emergency Contact First Name</label>
-                            <input type="text" id="emergency_first_name" name="emergency_first_name">
-
-                            <label for="emergency_last_name">Emergency Contact Last Name</label>
-                            <input type="text" id="emergency_last_name" name="emergency_last_name">
-
-                            <label for="emergency_contact">Emergency Contact number</label>
-                            <input type="text" id="emergency_contact" name="emergency_contact">
-
-                            <label for="emergency_email">Emergency Contact Email</label>
-                            <input type="email" id="emergency_email" name="emergency_email">
-
-                            <label for="emergency_relationship">Emergency Contact Relationship to Participant</label>
-                            <input type="text" id="emergency_relationship" name="emergency_relationship">
-
-                            <!-- Submit button or other controls -->
-                            <button type="submit">Submit</button>
-                        </div>
-                        <div class="flex p-4">
-
+                            <div class="text-sm leading-5 font-medium text-gray-900">Quote</div>
                         </div>
                     </div>
                 </div>
+
+                <div class="flex flex-col mt-4 hover:cursor-pointer" wire:click="changeStep('your-details')">
+                    <div
+                        class="border-l-[3px] @if($currentStep == 'your-details')border-sky-500 @else border-gray-500 @endif flex">
+                        <div class="pl-2 py-1 flex flex-col justify-center">
+                            <div
+                                class="text-xs leading-4 font-semibold tracking-wide uppercase  @if($currentStep == 'your-details')text-sky-500 @else text-gray-500 @endif ">
+                                Step 2
+                            </div>
+                            <div class="text-sm leading-5 font-medium text-gray-900">Your Details</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col mt-4 hover:cursor-pointer" wire:click="changeStep('trip-details')">
+                    <div
+                        class="border-l-[3px] @if($currentStep == 'trip-details')border-sky-500 @else border-gray-500 @endif flex">
+                        <div class="pl-2 py-1 flex flex-col justify-center">
+                            <div
+                                class="text-xs leading-4 font-semibold tracking-wide uppercase  @if($currentStep == 'trip-details')text-sky-500 @else text-gray-500 @endif ">
+                                Step 3
+                            </div>
+                            <div class="text-sm leading-5 font-medium text-gray-900">Trip Details</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col mt-4 hover:cursor-pointer" wire:click="changeStep('medical-details')">
+                    <div
+                        class="border-l-[3px] @if($currentStep == 'medical-details')border-sky-500 @else border-gray-500 @endif flex">
+                        <div class="pl-2 py-1 flex flex-col justify-center">
+                            <div
+                                class="text-xs leading-4 font-semibold tracking-wide uppercase  @if($currentStep == 'medical-details')text-sky-500 @else text-gray-500 @endif ">
+                                Step 4
+                            </div>
+                            <div class="text-sm leading-5 font-medium text-gray-900">Medical Details</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col mt-4 hover:cursor-pointer" wire:click="changeStep('summary')">
+                    <div
+                        class="border-l-[3px] @if($currentStep == 'summary')border-sky-500 @else border-gray-500 @endif flex">
+                        <div class="pl-2 py-1 flex flex-col justify-center">
+                            <div
+                                class="text-xs leading-4 font-semibold tracking-wide uppercase  @if($currentStep == 'summary')text-sky-500 @else text-gray-500 @endif ">
+                                Step 5
+                            </div>
+                            <div class="text-sm leading-5 font-medium text-gray-900">Summary</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Quote Section -->
+            @if ($currentStep == 'quote')
+                <div class="w-4/6">
+                    <div class="pb-4 border-b border-gray-200">
+                        <h2 class="text-lg leading-6 font-medium text-gray-900">Quote</h2>
+                        <div class="text-sm leading-5 font-normal text-gray-500">Respite/Short Term Accommodation
+                            includes
+                            accommodation, food and activities anywhere in Australia!
+                        </div>
+                    </div>
+
+
+                    <div class="block mt-6 border-b border-gray-200 pb-4">
+                        <x-label>Number of Nights</x-label>
+                        <x-input wire:model="numberOfNights" class="w-full mt-2"
+                                 placeholder="Number of Nights"></x-input>
+                    </div>
+
+                    <div class="block mt-6 border-b border-gray-200 pb-4">
+                        <x-label>You can plan your own STA, or have a Roar Agency Consultant plan it for you.</x-label>
+                        <div class="flex flex-col mt-2">
+                            <label>
+                                <input type="radio" wire:model="supportWorkerPreference"
+                                       value="Bring your own support worker">
+                                Bring your own support worker
+                            </label>
+                            <label>
+                                <input type="radio" wire:model="supportWorkerPreference"
+                                       placeholder="Supported by Roar Agency">
+                                Supported by Roar Agency
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="w-full mt-6 bg-sky-50 p-3">
+                        <div class="text-sky-900 text-lg leading-6 font-medium">STA Cost Breakdown</div>
+                        <div class="text-gray-700 text-sm leading-5 font-normal">${{$quoteAmount}} will be spent on
+                            food,
+                            accommodation, and activities. The remainder of the invoice is Support Worker and Roar
+                            Agency
+                            fee.
+                        </div>
+                    </div>
+
+
+                    <div class="block mt-6 border-b border-gray-200 pb-4">
+                        <x-label>Do you currently receive ongoing weekly supports from Roar Agency?</x-label>
+                        <div class="flex flex-col mt-2">
+                            <label>
+                                <input type="radio" wire:model="receiveSupportFromRoar" value="Yes"/>
+                                Yes
+                            </label>
+                            <label>
+                                <input type="radio" wire:model="receiveSupportFromRoar" value="No"/>
+                                No
+                            </label>
+                        </div>
+                    </div>
+
+
+                    <div class="border-t border-gray-200">
+                        <div class="flex justify-between pt-4">
+                            @if (!$isGuest)
+                                <div
+                                    class="hover:cursor-pointer inline-flex px-3 py-2 border border-gray-300 rounded items-center justify-center text-sm leading-5 font-medium text-gray-700">
+                                    <div wire:click="cancel">Cancel</div>
+                                </div>
+                            @endif
+                            <div
+                                class="hover:cursor-pointer inline-flex px-3 py-2 border border-gray-300 rounded items-center justify-center text-sm leading-5 font-medium text-gray-700">
+                                <div wire:click="nextStep">Next</div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            @endif
+
+            @if ($currentStep == 'your-details')
+                <div class="w-4/6">
+                    <div class="pb-4 border-b border-gray-200">
+                        <h2 class="text-lg leading-6 font-medium text-gray-900">Trip Participant Details</h2>
+                    </div>
+
+                    <div class="block mt-6 border-b border-gray-200 pb-4">
+                        <x-label>Your role in this booking</x-label>
+                        <div class="flex flex-col mt-2">
+                            <label>
+                                <input type="radio" wire:model="currentUserRoleForTrip" value="participant"/>
+                                Participant
+                            </label>
+                            <label>
+                                <input type="radio" wire:model="currentUserRoleForTrip" value="plan-nominee"/>
+                                Plan Nominee
+                            </label>
+                            <label>
+                                <input type="radio" wire:model="currentUserRoleForTrip" value="support-coordinator"/>
+                                Support Coordinator
+                            </label>
+                            <label>
+                                <input type="radio" wire:model="currentUserRoleForTrip" value="support-worker"/>
+                                Support Worker
+                            </label>
+                        </div>
+                    </div>
+
+                    <h2>Participant</h2>
+                    <x-input wire:model="participantFirstName" placeholder="First Name"></x-input>
+                    <x-input wire:model="participantLastName" placeholder="Last Name"></x-input>
+                    <x-input wire:model="participantTitle" placeholder="Title"></x-input>
+                    <x-input wire:model="participantPronouns" placeholder="Pronouns"></x-input>
+                    <x-input wire:model="participantEmailAddress" placeholder="Email Address"></x-input>
+                    <x-input wire:model="participantContact" placeholder="Contact"></x-input>
+                    <x-input wire:model="participantCity" placeholder="City"></x-input>
+                    <x-input wire:model="participantState" placeholder="State"></x-input>
+                    <x-input wire:model="participantPostCode" placeholder="Post Code"></x-input>
+                    <x-checkbox wire:model="participantCompanionCard">Companion Card</x-checkbox>
+                    <x-checkbox wire:model="participantSmoker">Smoker</x-checkbox>
+
+
+                    <div class="border-t border-gray-200">
+                        <div class="flex justify-between pt-4">
+                            <div
+                                class="hover:cursor-pointer inline-flex px-3 py-2 border border-gray-300 rounded items-center justify-center text-sm leading-5 font-medium text-gray-700">
+                                <div wire:click="previousStep">Previous</div>
+                            </div>
+
+                            <div
+                                class="hover:cursor-pointer inline-flex px-3 py-2 border border-gray-300 rounded items-center justify-center text-sm leading-5 font-medium text-gray-700">
+                                <div wire:click="nextStep">Next</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endif
+        </div>
+
+
+        <div class="hidden">
+            <!-- Participant Section -->
+
+
+            <!-- Medical Details Section -->
+            <h3>Medical Details</h3>
+            <x-input wire:model="participantMedicalDetailsDiagnosis" placeholder="Diagnosis"></x-input>
+            <x-input wire:model="participantMedicalDetailsMedicalConditions" placeholder="Medical Conditions"></x-input>
+            <x-input wire:model="participantMedicalDetailsPhysicalSupportNeeds"
+                     placeholder="Physical Support Needs"></x-input>
+            <x-input wire:model="participantMedicalDetailsMedication" placeholder="Medication"></x-input>
+            <x-input wire:model="participantMedicalDetailsMedicalAdministration"
+                     placeholder="Medical Administration"></x-input>
+            <x-input wire:model="participantMedicalDetailsAllergies" placeholder="Allergies"></x-input>
+            <x-checkbox wire:model="participantMedicalDetailsBehaviourSupportPlanOrForensicOrder">Behaviour Support Plan
+                or
+                Forensic
+                Order
+            </x-checkbox>
+
+            <!-- Plan Nominee Section -->
+            <h3>Plan Nominee</h3>
+            <x-input wire:model="participantPlanNomineeFirstName" placeholder="First Name"></x-input>
+            <x-input wire:model="participantPlanNomineeLastName" placeholder="Last Name"></x-input>
+            <x-input wire:model="participantPlanNomineeEmail" placeholder="Email"></x-input>
+            <x-input wire:model="participantPlanNomineeContact" placeholder="Contact"></x-input>
+
+            <!-- Support Coordinator Section -->
+            <h3>Support Coordinator</h3>
+            <x-input wire:model="participantSupportCoordinatorFirstName" placeholder="First Name"></x-input>
+            <x-input wire:model="participantSupportCoordinatorLastName" placeholder="Last Name"></x-input>
+            <x-input wire:model="participantSupportCoordinatorEmail" placeholder="Email"></x-input>
+            <x-input wire:model="participantSupportCoordinatorContact" placeholder="Contact"></x-input>
+
+            <!-- Appointed Guardian Section -->
+            <h3>Appointed Guardian</h3>
+            <x-input wire:model="participantAppointedGuardianFirstName" placeholder="First Name"></x-input>
+            <x-input wire:model="participantAppointedGuardianLastName" placeholder="Last Name"></x-input>
+            <x-input wire:model="participantAppointedGuardianEmail" placeholder="Email"></x-input>
+            <x-input wire:model="participantAppointedGuardianContact" placeholder="Contact"></x-input>
+
+            <!-- Emergency Contact Section -->
+            <h3>Emergency Contact</h3>
+            <x-input wire:model="participantEmergencyContactFirstName" placeholder="First Name"></x-input>
+            <x-input wire:model="participantEmergencyContactLastName" placeholder="Last Name"></x-input>
+            <x-input wire:model="participantEmergencyContactContactNumber" placeholder="Contact Number"></x-input>
+            <x-input wire:model="participantEmergencyContactEmail" placeholder="Email"></x-input>
+            <x-input wire:model="participantEmergencyContactRelationship" placeholder="Relationship"></x-input>
+
+            <!-- Trip Section -->
+            <h2>Trip</h2>
+            <x-input wire:model="tripLocation" placeholder="Location"></x-input>
+            <x-input wire:model="tripAccommodationProvider" placeholder="Accommodation Provider"></x-input>
+            <x-input wire:model="tripStartDate" placeholder="Start Date"></x-input>
+            <x-input wire:model="tripEndDate" placeholder="End Date"></x-input>
+
+            <!-- Support Worker Section -->
+            <h3>Support Worker</h3>
+            <x-input wire:model="tripSupportWorkerFirstName" placeholder="First Name"></x-input>
+            <x-input wire:model="tripSupportWorkerLastName" placeholder="Last Name"></x-input>
+            <x-input wire:model="tripSupportWorkerEmail" placeholder="Email"></x-input>
+            <x-input wire:model="tripSupportWorkerContact" placeholder="Contact"></x-input>
+
+            <!-- Emotional Support Section -->
+            <h3>Emotional Support</h3>
+            <x-input wire:model="tripEmotionalSupportName" placeholder="Name"></x-input>
+            <x-input wire:model="tripEmotionalSupportRelationship" placeholder="Relationship"></x-input>
+            <x-input wire:model="tripEmotionalSupportDateOfBirth" placeholder="Date of Birth"></x-input>
+
+            <!-- Accommodation Details Section -->
+            <x-input wire:model="tripNumberOfBedrooms" placeholder="Number of Bedrooms"></x-input>
+            <x-checkbox wire:model="tripAccommodationAccessible">Accommodation Accessible</x-checkbox>
+            <x-input wire:model="tripAccommodationAccessibleDetails"
+                     placeholder="Accommodation Accessible Details"></x-input>
+            <x-input wire:model="tripAccommodationRequests" placeholder="Accommodation Requests"></x-input>
+
+            <!-- Submit Button -->
+            <button wire:click="submit">Submit</button>
+        </div>
     </form>
 </div>

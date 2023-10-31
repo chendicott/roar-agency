@@ -25,8 +25,8 @@ Route::middleware([
     'redirect.admin',
 ])->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/trip/new', \App\Http\Livewire\TripForm::class)->name('trip.new');
     Route::get('/trip/{trip}', TripController::class)->name('trip');
-    Route::get('/trip/new', TripController::class)->name('trip');
     Route::get('/profile/{user}', UserController::class)->name('profile');
 });
 

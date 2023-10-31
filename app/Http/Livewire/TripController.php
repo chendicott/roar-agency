@@ -13,7 +13,7 @@ class TripController extends Component
     public Trip $trip;
     public function mount(Trip $trip) {
         $this->authorize('view', $trip);
-        $trip->load('participants.medicalDetail', 'participants.relatedUsers', 'participants.onBehalfOfParticipant', 'participants.onBehalfOfParticipant.medicalDetails', 'supportWorkers.medicalDetails', 'caseNotes', 'incidentReports', 'fileAttachments');
+        $trip->load('participants.medicalDetails', 'participants.relatedUsers', 'participants.onBehalfOfParticipant', 'participants.onBehalfOfParticipant.medicalDetails', 'supportWorkers.medicalDetails', 'caseNotes', 'incidentReports', 'fileAttachments');
         $this->trip = $trip;
     }
     public function render()

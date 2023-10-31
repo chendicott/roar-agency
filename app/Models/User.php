@@ -64,7 +64,7 @@ class User extends Authenticatable
         return $this->type === 'admin';
     }
 
-    public function medicalDetail()
+    public function medicalDetails()
     {
         return $this->hasOne(MedicalDetail::class);
     }
