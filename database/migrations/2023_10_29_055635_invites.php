@@ -11,13 +11,12 @@ return new class extends Migration
     {
         Schema::create('invites', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('trip_id');
-            $table->string('user_type');
-            $table->string('invite_guid');
+            $table->unsignedBigInteger('user_id');
+            $table->string('invite_guid')->unique();
             $table->boolean('is_active')->default(true);
             $table->timestamps();
 
-            $table->foreign('trip_id')->references('id')->on('trips')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

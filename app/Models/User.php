@@ -24,10 +24,13 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
+        'first_name',
+        'last_name',
         'email',
         'password',
         'dateofbirth',
+        'contact',
+        'details'
     ];
 
     /**
@@ -49,6 +52,7 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'details' => 'array'
     ];
 
     /**
@@ -67,6 +71,10 @@ class User extends Authenticatable
     public function medicalDetails()
     {
         return $this->hasOne(MedicalDetail::class);
+    }
+
+    public function invite() {
+        return $this->hasOne(Invite::class);
     }
 
     public function submittedCaseNotes()

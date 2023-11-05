@@ -7,6 +7,10 @@ class Trip extends Model
 {
     protected $fillable = ['trip_name', 'trip_start_date', 'trip_end_date', 'trip_location', 'trip_data', 'budget'];
 
+    protected $casts = [
+        'trip_data' => 'array',
+    ];
+
     public function caseNotes()
     {
         return $this->hasMany(CaseNote::class);

@@ -8,8 +8,8 @@ class Invite extends Model
 {
     protected $fillable = ['trip_id', 'user_type', 'invite_guid', 'is_active'];
 
-    public function trip()
+    public function user()
     {
-        return $this->belongsTo(Trip::class);
+        return $this->belongsTo(User::class);
     }
 }

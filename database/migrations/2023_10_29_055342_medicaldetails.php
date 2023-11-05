@@ -11,7 +11,7 @@ return new class extends Migration
         Schema::create('medical_details', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->json('medical_data')->nullable();
+            $table->longText('medical_data')->nullable();
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
