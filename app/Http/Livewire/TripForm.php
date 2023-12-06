@@ -22,7 +22,12 @@ class TripForm extends Component
     public $numberOfNights;
     public $supportWorkerPreference;
     public $receiveSupportFromRoar;
-    public $quoteAmount;
+
+    public $quote;
+    public $activitiesAmount;
+    public $planTotalQuote;
+    public $quoteRoarFees;
+
 
     public $participant = [];
 
@@ -105,6 +110,49 @@ class TripForm extends Component
         $this->processFieldDefaults();
     }
 
+    public function calculateQuote() {
+        $this->quoteAmount = 0;
+        if ($this->numberOfNights === null || $this->numberOfNights === '') return;
+
+        if ($this->supportWorkerPreference == "Bring your own support worker") {
+            $perDayFoodActivities = 320;
+            $perNightAccommodation = 425;
+            $perDayroarFees = 396;
+
+            $numberOfDays = $this->numberOfNights + 1;
+
+            $this->quoteRoarFees = $perDayroarFees * $numberOfDays;
+            $this->activitiesAmount = ($perDayFoodActivities * $numberOfDays) + ($perNightAccommodation * $this->numberOfNights);
+            $this->planTotalQuote = $this->quoteRoarFees + $this->activitiesAmount;
+
+            return;
+        } else {
+            $plans = [
+                ['nights' => 1, 'days' => 2, 'cost' => 1065, 'total_charge' => '3000-5000'],
+                ['nights' => 2, 'days' => 3, 'cost' => 1810, 'total_charge' => '5000-6922'],
+                ['nights' => 3, 'days' => 4, 'cost' => 2555, 'total_charge' => '7000-8703'],
+                ['nights' => 4, 'days' => 5, 'cost' => 3300, 'total_charge' => '8500-10484'],
+                ['nights' => 5, 'days' => 6, 'cost' => 4045, 'total_charge' => '10600-12265'],
+                ['nights' => 6, 'days' => 7, 'cost' => 4790, 'total_charge' => '13500-14046'],
+                ['nights' => 7, 'days' => 8, 'cost' => 5535, 'total_charge' => '15200-16916'],
+                ['nights' => 8, 'days' => 9, 'cost' => 6280, 'total_charge' => '17000-19187'],
+                ['nights' => 9, 'days' => 10, 'cost' => 7025, 'total_charge' => '18700-20968'],
+                ['nights' => 10, 'days' => 11, 'cost' => 7770, 'total_charge' => '20500-22749'],
+                ['nights' => 11, 'days' => 12, 'cost' => 8515, 'total_charge' => '22300-24530'],
+                ['nights' => 12, 'days' => 13, 'cost' => 9260, 'total_charge' => '24500-26311'],
+                ['nights' => 13, 'days' => 14, 'cost' => 10005, 'total_charge' => '26500-28092'],
+            ];
+
+            foreach ($plans as $plan) {
+                if ($plan['nights'] == $this->numberOfNights) {
+                    $this->activitiesAmount = $plan['cost'];
+                    $this->planTotalQuote = $plan['total_charge'];
+                    return;
+                }
+            }
+        }
+    }
+
     private function setDefaultValueForParticipant($participantIndex, $key, $value) {
         if (!isset($this->participant[$participantIndex][$key]) || $this->participant[$participantIndex][$key] === '') {
             $this->participant[$participantIndex][$key] = $value;
@@ -129,11 +177,16 @@ class TripForm extends Component
     }
 
     public function getQuoteBreakdownProperty() {
+        $this->calculateQuote();
+        $quote = "";
         if ($this->supportWorkerPreference == "Bring your own support worker") {
-            return '$xx will be spent on food, accommodation, and activities. $xx Roar agency fee. Total amount to be charged to plan for n nights/n days is $xx';
+            $quote = '$'. $this->activitiesAmount .' will be spent on food, accommodation, and activities. $'.$this->quoteRoarFees.' Roar agency fee. Total amount to be charged to plan for '. $this->numberOfNights .' nights is $' . $this->planTotalQuote;
         } else {
-            return '$ will be spent on food, accommodation, and activities. The remainder of the invoice is Support Worker and Roar Agency fee.';
+            $quote = '$'. $this->activitiesAmount .' will be spent on food, accommodation, and activities. Total amount to be charged to plan for '. $this->numberOfNights .' nights is $' . $this->planTotalQuote;
         }
+
+        $this->quote = $quote;
+        return $quote;
     }
 
     public function nextStep() {
@@ -241,7 +294,7 @@ class TripForm extends Component
 
     private function quoteRules() {
         $rules = [
-            'numberOfNights' => 'required|numeric|min:1',
+            'numberOfNights' => 'required|numeric|min:1|max:13',
             'supportWorkerPreference' => 'required'
         ];
 
@@ -480,7 +533,7 @@ class TripForm extends Component
         $tripJson['quote']['numberOfNights'] = $this->numberOfNights;
         $tripJson['quote']['supportWorkerPreference'] = $this->supportWorkerPreference;
         $tripJson['quote']['receiveSupportFromRoar'] = $this->receiveSupportFromRoar;
-        $tripJson['quote']['amount'] = $this->quoteAmount;
+        $tripJson['quote']['details'] = $this->quote;
 
         $trip = new Trip();
         $trip->trip_data = $tripJson;

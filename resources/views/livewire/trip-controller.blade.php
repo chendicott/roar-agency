@@ -210,12 +210,16 @@
                             <div class="py-6 border-b border-gray-200 px-5">
                                 <div class="flex">
                                     <div class="flex flex-col w-60">
-                                        <div class="text-sm text-gray-900">Quote Amount</div>
+                                        <div class="text-sm text-gray-900">Quote Details</div>
                                     </div>
 
 
                                     <div class="flex items-center w-full">
-                                        <div class="text-base text-gray-900">${{$trip->trip_data['quote']['amount']}}</div>
+                                        @if (isset($trip->trip_data['quote']['details']))
+                                         <div class="text-base text-gray-900">${{$trip->trip_data['quote']['details']}}</div>
+                                        @else
+                                            <div class="text-base text-gray-900">No quote details provided</div>
+                                        @endif
                                     </div>
 
                                 </div>
