@@ -16,6 +16,7 @@
         "livewire/livewire": "^2.11"
     },
     "require-dev": {
+        "beyondcode/helo-laravel": "^1.7",
         "fakerphp/faker": "^1.9.1",
         "laravel/pint": "^1.0",
         "laravel/sail": "^1.26",

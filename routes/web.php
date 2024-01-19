@@ -3,6 +3,8 @@
 use App\Http\Controllers\DashboardController;
 use App\Http\Livewire\TripController;
 use App\Http\Livewire\UserController;
+use App\Mail\SendUserInvite;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,6 +19,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/guest/trip/new', \App\Http\Livewire\TripForm::class);
+Route::match(array('GET', 'POST'), '/guest/accept/{guid}', [\App\Http\Controllers\UserController::class, 'activate'])->name('invite.accept');
 
 Route::middleware([
     'auth:sanctum',

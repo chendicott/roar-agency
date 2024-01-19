@@ -2,10 +2,12 @@
 
 namespace App\Http\Livewire;
 
+use App\Mail\SendUserInvite;
 use App\Models\Trip;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
 use Livewire\Component;
@@ -16,6 +18,9 @@ class TripForm extends Component
 
     public $currentStep = 'quote';
     public $currentUser;
+
+    public $newUserPassword;
+
     public $currentUserRoleForTrip = null;
 
     // Quote properties
@@ -52,6 +57,9 @@ class TripForm extends Component
     public $userLastName;
     public $userEmail;
     public $userContact;
+
+    public $userIsNew = true;
+    public $userExistenceChecked = [];
 
 
     // Trip properties
@@ -468,6 +476,15 @@ class TripForm extends Component
                 $participant->tripsAsParticipant()->save($trip, ['user_role' => 'participant']);
             }
 
+            // Update submitting user's password
+            if ($this->isGuest && $this->userIsNew) {
+                $userToActivate = User::where('email', $this->userEmail)->first();
+                if ($userToActivate) {
+                    $userToActivate->password = Hash::make($this->newUserPassword);
+                    $userToActivate->is_active = true;
+                    $userToActivate->save();
+                }
+            }
 
             DB::commit();
         } catch (\Exception $e)  {
@@ -497,11 +514,13 @@ class TripForm extends Component
             $user->details = $details;
             $user->save();
 
-            if (!$isActive) {
+            if (!$isActive && trim($this->userEmail) !== trim($email)) {
                 $invite = $user->invite()->create([
                     'invite_guid' => Str::uuid(),
                     'is_active' => true
                 ]);
+
+                Mail::to($user->email)->send(new SendUserInvite($user, $invite));
             }
         }
 
@@ -571,6 +590,16 @@ class TripForm extends Component
         }
 
         $currentUserIsParticipant = false;
+
+        if ($this->isGuest && !empty($this->userEmail) && (!$this->userIsNew || !isset($this->userExistenceChecked[trim($this->userEmail)]))) {
+            // Does a user exist with this email address
+            $user = User::where('email', trim($this->userEmail))->first();
+            $this->userExistenceChecked[trim($this->userEmail)] = true;
+
+            if (!$user) {
+                $this->userIsNew = true;
+            }
+        }
 
         if ($this->currentUserRoleForTrip === 'participant') {
             $this->setDefaultValueForParticipant(1, 'firstName', $this->userFirstName);

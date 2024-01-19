@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Invite;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -39,6 +40,49 @@ class UserController extends Controller
         }
 
         return view('admin.user');
+    }
+
+    public function activate(string $guid) {
+        if (request()->method() === "GET") {
+            if (!request()->hasValidSignature()) {
+                session()->flush();
+                abort(401);
+            }
+
+            session()->flash('signature_valid', true);
+        }
+
+
+        // Find user based on activation guid
+        $invite = Invite::where('invite_guid', $guid)->firstOrFail();
+        $user = $invite->user;
+
+        if (!$user) {
+            abort(404);
+        }
+
+        if (request()->method() === 'POST') {
+            if (session()->has('signature_valid')) {
+                session()->forget('signature_valid');
+            } else {
+                abort(401);
+            }
+
+            $this->validate(request(), [
+                'password' => 'required|string|min:8|confirmed'
+            ]);
+
+            $user->password = bcrypt(request()->password);
+            $user->is_active = true;
+
+            $user->save();
+            $invite->delete();
+
+
+            return redirect('login')->with('status', 'Your account has been successfully activated!');
+        }
+
+        return view('auth.activate', ['user' => $user]);
     }
 
     public function camelCaseToFriendlyName($input) {

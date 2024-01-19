@@ -175,11 +175,13 @@
                                 <x-label>Your role in this booking</x-label>
                                 <div class="flex flex-col mt-2">
                                     <label>
-                                        <input type="radio" wire:model.lazy="currentUserRoleForTrip" value="participant"/>
+                                        <input type="radio" wire:model.lazy="currentUserRoleForTrip"
+                                               value="participant"/>
                                         Participant
                                     </label>
                                     <label>
-                                        <input type="radio" wire:model.lazy="currentUserRoleForTrip" value="plan-nominee"/>
+                                        <input type="radio" wire:model.lazy="currentUserRoleForTrip"
+                                               value="plan-nominee"/>
                                         Plan Nominee
                                     </label>
                                     <label>
@@ -307,7 +309,8 @@
                                         <x-input type="email" required
                                                  wire:model.lazy="participant.{{ $participantIdentifier }}.email"
                                                  class="w-full"
-                                                 placeholder="Email Address" :disabled="isset($disableEmailChangeForParticipant[$participantIdentifier]) && $disableEmailChangeForParticipant[$participantIdentifier] == true"></x-input>
+                                                 placeholder="Email Address"
+                                                 :disabled="isset($disableEmailChangeForParticipant[$participantIdentifier]) && $disableEmailChangeForParticipant[$participantIdentifier] == true"></x-input>
                                         <x-input-error for="participant.{{ $participantIdentifier }}.email"/>
                                     </div>
 
@@ -817,14 +820,16 @@
 
                                             <div class="block pb-4 mt-6 w-full">
                                                 <x-label>Emotional Support Relationship</x-label>
-                                                <x-input wire:model.lazy="tripEmotionalSupportRelationship" class="w-full"
+                                                <x-input wire:model.lazy="tripEmotionalSupportRelationship"
+                                                         class="w-full"
                                                          placeholder="Emotional Support Relationship"></x-input>
                                                 <x-input-error for="tripEmotionalSupportRelationship"/>
                                             </div>
 
                                             <div class="block pb-4 w-full">
                                                 <x-label>Emotional Support Date of Birth</x-label>
-                                                <x-input wire:model.lazy="tripEmotionalSupportDateOfBirth" class="w-full"
+                                                <x-input wire:model.lazy="tripEmotionalSupportDateOfBirth"
+                                                         class="w-full"
                                                          placeholder="Emotional Support Date of Birth"
                                                          type="date"></x-input>
                                                 <x-input-error for="tripEmotionalSupportDateOfBirth"/>
@@ -1195,7 +1200,25 @@
                                                                     class="text-base pt-2 font-medium leading-5 text-gray-900">{{$tripEndDate}}</div>
                                                             </div>
                                                         @endif
+
                                                     </div>
+
+                                                    @if ($userIsNew === true)
+                                                        <div class="py-6 border-t border-gray-200 ">
+                                                            <div class="leading-5 font-medium text-gray-500">Create your account
+                                                            </div>
+                                                            <div class="block pb-4 w-full mt-4">
+
+                                                                <x-label>
+                                                                    Password
+                                                                    <input type="password" wire:model="newUserPassword" class="mt-1 w-full"/>
+                                                                </x-label>
+                                                                <x-input-error
+                                                                    for="newUserPassword"/>
+                                                            </div>
+                                                        </div>
+                                                    @endif
+
                                                     <div class="border-t border-gray-200">
                                                         <div class="flex justify-between pt-4">
                                                             <div
