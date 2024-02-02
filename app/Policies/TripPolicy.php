@@ -28,6 +28,14 @@ class TripPolicy
         return false;
     }
 
+    public function addParticipant(User $user, Trip $trip) {
+        if ($user->isAdmin()) {
+            return true;
+        }
+
+        return false;
+    }
+
     public function update(User $user, Trip $trip) {
         if ($user->isAdmin()) {
             return true;

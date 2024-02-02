@@ -16,8 +16,27 @@ class TripController extends Component
     public $incident_date;
 
     public $status;
+
+    public $isEditing = false;
+
+    public $editButtonText = 'Edit Trip';
+
+    public $newParticipant;
+    public $newSupportWorker;
+
     protected $rules = [
-        'trip.budget' => 'nullable'
+        'trip.budget' => 'nullable',
+        'trip.trip_end_date' => 'nullable',
+        'trip.trip_start_date' => 'nullable',
+        'trip.trip_location' => 'nullable',
+        'trip.trip_data.location' => 'nullable',
+        'trip.trip_data.accommodationProvider' => 'nullable',
+        'trip.trip_data.emotionalSupportRequired' => 'nullable',
+        'trip.trip_data.emotionalSupport' => 'nullable',
+        'trip.trip_data.numberOfBedrooms' => 'nullable',
+        'trip.trip_data.accommodationAccessible' => 'nullable',
+        'trip.trip_data.accommodationAccessibleDetails' => 'nullable',
+        'trip.trip_data.accommodationRequests' => 'nullable',
     ];
 
     public function mount(Trip $trip) {
@@ -32,6 +51,61 @@ class TripController extends Component
         $this->trip->update([
             'budget' => $this->trip->budget
         ]);
+    }
+
+    public function addParticipant() {
+        $this->authorize('addParticipant', $this->trip);
+        $this->validate([
+            'newParticipant' => 'required'
+        ]);
+
+        $this->trip->participants()->attach($this->newParticipant, ['user_role' => 'participant']);
+
+        $this->trip->refresh();
+
+        $this->newParticipant = null;
+    }
+
+    public function getAllUsersAvailableToLinkProperty() {
+        $allUsers = \App\Models\User::all();
+
+        // Filter all users to exclude users already linked to the trip as a support worker or participant
+        $allUsers = $allUsers->filter(function($user) {
+            return !$this->trip->allParticipants()->contains($user) && !$this->trip->supportWorkers->contains($user);
+        });
+
+        return $allUsers;
+    }
+
+    public function removeParticipant($participantId) {
+        $this->authorize('addParticipant', $this->trip);
+        $this->trip->participants()->detach($participantId);
+        $this->trip->refresh();
+    }
+
+    public function removeSupportWorker($supportWorkerId) {
+        $this->authorize('addParticipant', $this->trip);
+        $this->trip->supportWorkers()->detach($supportWorkerId);
+        $this->trip->refresh();
+    }
+
+    public function addSupportWorker() {
+        $this->authorize('addParticipant', $this->trip);
+        $this->validate([
+            'newSupportWorker' => 'required'
+        ]);
+
+        $this->trip->supportWorkers()->attach($this->newSupportWorker, ['user_role' => 'support_worker']);
+
+        $this->trip->refresh();
+
+        $this->newSupportWorker = null;
+    }
+
+    public function toggleEditing() {
+        $this->isEditing = !$this->isEditing;
+        $this->editButtonText = $this->isEditing ? 'Save Changes' : 'Edit Trip';
+        $this->trip->save();
     }
 
     public function updatedStatus() {
